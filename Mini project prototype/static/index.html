@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ardio - Smart Energy Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+        }
+        .hero {
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            border-radius: 32px;
+            padding: 2.5rem 2rem 2rem 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 32px rgba(255, 179, 71, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            color: #fff;
+        }
+        .hero-icon {
+            font-size: 3.5rem;
+            color: #fff;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(255, 179, 71, 0.15);
+        }
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -2px;
+        }
+        .hero-desc {
+            font-size: 1.2rem;
+            color: #fffbe6;
+        }
+        .card {
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(255, 179, 71, 0.08), 0 1.5px 4px rgba(255, 179, 71, 0.03);
+            border: none;
+            margin-bottom: 32px;
+            transition: box-shadow 0.2s, transform 0.2s;
+            background: #fff8f0;
+        }
+        .card:hover {
+            box-shadow: 0 16px 48px rgba(255, 179, 71, 0.18), 0 3px 8px rgba(255, 179, 71, 0.08);
+            transform: translateY(-4px) scale(1.01);
+        }
+        .card-header {
+            border-radius: 24px 24px 0 0;
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            border-bottom: none;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.6rem 2rem;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(255, 179, 71, 0.08);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #ffcc33 0%, #ffb347 100%);
+            box-shadow: 0 4px 16px rgba(255, 179, 71, 0.12);
+        }
+        .form-control, .form-check-input {
+            border-radius: 10px;
+            font-size: 1.05rem;
+        }
+        .table {
+            border-radius: 16px;
+            overflow: hidden;
+            background: #fff;
+        }
+        .table-striped>tbody>tr:nth-of-type(odd) {
+            background-color: #fff3e0;
+        }
+        #prefs-msg {
+            font-size: 1rem;
+            color: #ff9800;
+            margin-top: 0.5rem;
+        }
+        .badge-status {
+            font-size: 1rem;
+            padding: 0.5em 1em;
+            border-radius: 1em;
+        }
+        .progress {
+            height: 1.2rem;
+            border-radius: 1rem;
+            background: #ffe0b2;
+        }
+        .progress-bar {
+            font-weight: 600;
+            font-size: 1rem;
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            color: #fff;
+        }
+        .icon-status {
+            font-size: 1.5rem;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+        @media (max-width: 991px) {
+            .card {
+                margin-bottom: 1.5rem;
+            }
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            .nav-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
+                white-space: nowrap;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .card {
+                margin-bottom: 1.5rem;
+            }
+            .hero-title {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 1.5rem;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+            .nav-link {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.85rem;
+                white-space: nowrap;
+                overflow: visible;
+            }
+            .nav-pills {
+                gap: 0.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid py-4">
+    <!-- Navigation Bar -->
+    <nav class="mb-4">
+        <ul class="nav nav-pills flex-wrap">
+            <li class="nav-item">
+                <a class="nav-link" href="/welcome">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/lights">Lighting</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/devices">Other Devices</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/stats">Statistics</a>
+            </li>
+            <li class="nav-item ms-md-auto mt-2 mt-md-0">
+                <a class="nav-link" href="/api/auth/logout">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="hero mb-5">
+        <div>
+            <i class="bi bi-lightbulb-fill hero-icon"></i>
+        </div>
+        <div>
+            <div class="hero-title">Ardio Dashboard</div>
+            <div class="hero-desc">See your energy at a glance. Interact, control, and optimize your room's energy usage with a warm, friendly interface.</div>
+        </div>
+    </div>
+    <div class="row mb-4 g-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Latest Sensor Data</div>
+                <div class="card-body" id="latest-sensor">
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-person-walking me-2" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <div class="text-muted">Motion</div>
+                                    <div class="fw-bold" id="motion-status">Loading...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-brightness-high me-2" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <div class="text-muted">Light Level</div>
+                                    <div class="fw-bold" id="light-level">Loading...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="mb-3">Device Control</h5>
+                            <div class="d-flex flex-wrap gap-3">
+                                <div class="card p-3" style="flex: 1; min-width: 200px;">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-lightbulb me-2" style="font-size: 1.5rem;"></i>
+                                            <span>Light</span>
+                                        </div>
+                                        <span class="badge bg-secondary" id="light-state">OFF</span>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-primary flex-grow-1" onclick="controlDevice('light', 'on')">ON</button>
+                                        <button class="btn btn-outline-secondary flex-grow-1" onclick="controlDevice('light', 'off')">OFF</button>
+                                    </div>
+                                </div>
+                                <div class="card p-3" style="flex: 1; min-width: 200px;">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-fan me-2" style="font-size: 1.5rem;"></i>
+                                            <span>Fan</span>
+                                        </div>
+                                        <span class="badge bg-secondary" id="fan-state">OFF</span>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-primary flex-grow-1" onclick="controlDevice('fan', 'on')">ON</button>
+                                        <button class="btn btn-outline-secondary flex-grow-1" onclick="controlDevice('fan', 'off')">OFF</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">User Preferences</div>
+                <div class="card-body">
+                    <form id="settingsForm">
+                        <div class="mb-3">
+                            <label class="form-label">Motion Timeout (seconds)</label>
+                            <input type="number" class="form-control" id="motionTimeout" min="0">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Light Threshold (%)</label>
+                            <input type="number" class="form-control" id="lightThreshold" min="0" max="100">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="autoMode">
+                            <label class="form-check-label">Auto Mode</label>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Auto Mode Status</label>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="auto-mode" onchange="updatePreferences()">
+                                <label class="form-check-label" for="auto-mode">Enable automatic control</label>
+                            </div>
+                            <small class="text-muted">When enabled, devices will be controlled automatically based on sensor data.</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Settings</button>
+                        <div id="prefs-msg" class="mt-2"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">Recent Activity</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Motion</th>
+                            <th>Light Level</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/script.js"></script>
+</body>
+</html>

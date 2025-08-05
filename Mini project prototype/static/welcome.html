@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Ardio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .welcome-container {
+            max-width: 900px;
+            padding: 2rem;
+        }
+        .hero {
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            border-radius: 32px;
+            padding: 3rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 32px rgba(255, 179, 71, 0.15);
+            text-align: center;
+            color: #fff;
+        }
+        .hero-icon {
+            font-size: 5rem;
+            color: #fff;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(255, 179, 71, 0.15);
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
+        }
+        .hero-desc {
+            font-size: 1.4rem;
+            color: #fffbe6;
+            margin-bottom: 2rem;
+        }
+        .card {
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(255, 179, 71, 0.08), 0 1.5px 4px rgba(255, 179, 71, 0.03);
+            border: none;
+            margin-bottom: 32px;
+            transition: box-shadow 0.2s, transform 0.2s;
+            background: #fff8f0;
+            text-align: center;
+            padding: 1.5rem;
+            height: 100%;
+            width: 100%;
+            overflow-wrap: break-word;
+        }
+        .card:hover {
+            box-shadow: 0 16px 48px rgba(255, 179, 71, 0.18), 0 3px 8px rgba(255, 179, 71, 0.08);
+            transform: translateY(-4px) scale(1.01);
+        }
+        .card-icon {
+            font-size: 3rem;
+            color: #ffb347;
+            margin-bottom: 1rem;
+        }
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ff9800;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            hyphens: auto;
+            max-width: 100%;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.8rem 2rem;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(255, 179, 71, 0.08);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #ffcc33 0%, #ffb347 100%);
+            box-shadow: 0 4px 16px rgba(255, 179, 71, 0.12);
+        }
+        @media (max-width: 991px) {
+            .hero {
+                padding: 2rem;
+            }
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            .hero-desc {
+                font-size: 1.2rem;
+            }
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .welcome-container {
+                padding: 1rem;
+            }
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            .btn-primary {
+                padding: 0.6rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 1.5rem;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+            .hero-desc {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid welcome-container">
+    <div class="hero">
+        <div>
+            <i class="bi bi-lightbulb-fill hero-icon"></i>
+        </div>
+        <div class="hero-title">Welcome to Ardio</div>
+        <div class="hero-desc">Your intelligent solution for energy management and home automation</div>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="/login" class="btn btn-primary btn-lg">Login</a>
+            <a href="/register" class="btn btn-outline-light btn-lg">Register</a>
+        </div>
+    </div>
+    
+    <div class="row g-4">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="card h-100">
+                <i class="bi bi-speedometer2 card-icon"></i>
+                <div class="card-title">Dashboard</div>
+                <p>View all your sensor data and device statuses in one place</p>
+                <a href="/login" class="btn btn-primary mt-auto">View Dashboard</a>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="card h-100">
+                <i class="bi bi-lightbulb card-icon"></i>
+                <div class="card-title">Lighting Control</div>
+                <p>Manage your lighting system with intuitive controls</p>
+                <a href="/login" class="btn btn-primary mt-auto">Control Lights</a>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="card h-100">
+                <i class="bi bi-gear card-icon"></i>
+                <div class="card-title">Other Devices</div>
+                <p>Control fans and other connected devices in your home</p>
+                <a href="/login" class="btn btn-primary mt-auto">Manage Devices</a>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+            <div class="card h-100">
+                <i class="bi bi-graph-up card-icon"></i>
+                <div class="card-title">Energy Statistics</div>
+                <p>View detailed energy usage statistics and trends</p>
+                <a href="/login" class="btn btn-primary mt-auto">View Stats</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

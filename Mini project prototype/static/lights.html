@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lighting Control - Ardio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+        }
+        .hero {
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            border-radius: 32px;
+            padding: 2.5rem 2rem 2rem 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 32px rgba(255, 179, 71, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            color: #fff;
+        }
+        .hero-icon {
+            font-size: 3.5rem;
+            color: #fff;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(255, 179, 71, 0.15);
+        }
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -2px;
+        }
+        .hero-desc {
+            font-size: 1.2rem;
+            color: #fffbe6;
+        }
+        .card {
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(255, 179, 71, 0.08), 0 1.5px 4px rgba(255, 179, 71, 0.03);
+            border: none;
+            margin-bottom: 32px;
+            transition: box-shadow 0.2s, transform 0.2s;
+            background: #fff8f0;
+        }
+        .card:hover {
+            box-shadow: 0 16px 48px rgba(255, 179, 71, 0.18), 0 3px 8px rgba(255, 179, 71, 0.08);
+            transform: translateY(-4px) scale(1.01);
+        }
+        .card-header {
+            border-radius: 24px 24px 0 0;
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            border-bottom: none;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.6rem 2rem;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(255, 179, 71, 0.08);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #ffcc33 0%, #ffb347 100%);
+            box-shadow: 0 4px 16px rgba(255, 179, 71, 0.12);
+        }
+        .btn-outline-secondary {
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.6rem 2rem;
+        }
+        .nav-pills {
+            margin-bottom: 2rem;
+        }
+        .nav-pills .nav-link {
+            border-radius: 12px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            color: #ff9800;
+            margin-right: 0.5rem;
+        }
+        .nav-pills .nav-link.active {
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            color: white;
+        }
+        .light-control-card {
+            padding: 1.5rem;
+            text-align: center;
+            height: 100%;
+        }
+        .light-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ffb347;
+        }
+        .light-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .light-status {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .status-on {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-off {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .brightness-control {
+            margin-bottom: 1.5rem;
+        }
+        .brightness-slider {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: #ffe0b2;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        .brightness-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffb347;
+            cursor: pointer;
+        }
+        .brightness-value {
+            font-weight: 600;
+            color: #ff9800;
+            margin-top: 0.5rem;
+        }
+        .control-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        @media (max-width: 991px) {
+            .nav-pills .nav-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
+                white-space: nowrap;
+                overflow: visible;
+            }
+            .nav-pills {
+                gap: 0.3rem;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            .nav-pills .nav-link {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .nav-pills .nav-link {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid py-4">
+    <div class="hero mb-5">
+        <div>
+            <i class="bi bi-lightbulb-fill hero-icon"></i>
+        </div>
+        <div>
+            <div class="hero-title">Lighting Control</div>
+            <div class="hero-desc">Manage all your lighting systems with intuitive controls</div>
+        </div>
+    </div>
+    
+    <nav class="mb-4">
+        <ul class="nav nav-pills flex-wrap">
+            <li class="nav-item">
+                <a class="nav-link" href="/welcome">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/lights">Lighting</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/devices">Other Devices</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/stats">Statistics</a>
+            </li>
+            <li class="nav-item ms-md-auto mt-2 mt-md-0">
+                <a class="nav-link" href="/api/auth/logout">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="row g-4">
+        <!-- Main Light -->
+        <div class="col-md-4">
+            <div class="card light-control-card">
+                <i class="bi bi-lightbulb-fill light-icon"></i>
+                <div class="light-title">Main Light</div>
+                <div class="light-status status-off" id="main-light-status">OFF</div>
+                <div class="brightness-control">
+                    <label>Brightness</label>
+                    <input type="range" class="brightness-slider" id="main-brightness" min="0" max="100" value="0" 
+                           oninput="document.getElementById('main-light-brightness-value').textContent = this.value + '%';"
+                           onchange="controlLight('main', 'brightness', this.value)">
+                    <div class="brightness-value" id="main-light-brightness-value">0%</div>
+                </div>
+                <div class="control-buttons">
+                    <button class="btn btn-primary flex-grow-1" onclick="controlLight('main', 'on')">ON</button>
+                    <button class="btn btn-outline-secondary flex-grow-1" onclick="controlLight('main', 'off')">OFF</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Desk Light -->
+        <div class="col-md-4">
+            <div class="card light-control-card">
+                <i class="bi bi-lamp-fill light-icon"></i>
+                <div class="light-title">Desk Light</div>
+                <div class="light-status status-off" id="desk-light-status">OFF</div>
+                <div class="brightness-control">
+                    <label>Brightness</label>
+                    <input type="range" class="brightness-slider" id="desk-brightness" min="0" max="100" value="0" 
+                           oninput="document.getElementById('desk-light-brightness-value').textContent = this.value + '%';"
+                           onchange="controlLight('desk', 'brightness', this.value)">
+                    <div class="brightness-value" id="desk-light-brightness-value">0%</div>
+                </div>
+                <div class="control-buttons">
+                    <button class="btn btn-primary flex-grow-1" onclick="controlLight('desk', 'on')">ON</button>
+                    <button class="btn btn-outline-secondary flex-grow-1" onclick="controlLight('desk', 'off')">OFF</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ambient Light -->
+        <div class="col-md-4">
+            <div class="card light-control-card">
+                <i class="bi bi-stars light-icon"></i>
+                <div class="light-title">Ambient Light</div>
+                <div class="light-status status-off" id="ambient-light-status">OFF</div>
+                <div class="brightness-control">
+                    <label>Brightness</label>
+                    <input type="range" class="brightness-slider" id="ambient-brightness" min="0" max="100" value="0" 
+                           oninput="document.getElementById('ambient-light-brightness-value').textContent = this.value + '%';"
+                           onchange="controlLight('ambient', 'brightness', this.value)">
+                    <div class="brightness-value" id="ambient-light-brightness-value">0%</div>
+                </div>
+                <div class="control-buttons">
+                    <button class="btn btn-primary flex-grow-1" onclick="controlLight('ambient', 'on')">ON</button>
+                    <button class="btn btn-outline-secondary flex-grow-1" onclick="controlLight('ambient', 'off')">OFF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mt-4">
+        <div class="card-header">Lighting Scenes</div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3 col-6">
+                    <button class="btn btn-primary w-100" onclick="activateScene('reading')">Reading</button>
+                </div>
+                <div class="col-md-3 col-6">
+                    <button class="btn btn-primary w-100" onclick="activateScene('movie')">Movie</button>
+                </div>
+                <div class="col-md-3 col-6">
+                    <button class="btn btn-primary w-100" onclick="activateScene('evening')">Evening</button>
+                </div>
+                <div class="col-md-3 col-6">
+                    <button class="btn btn-primary w-100" onclick="activateScene('all-off')">All Off</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Light control functions
+    async function controlLight(light, action, value = null) {
+        try {
+            const data = { device: light + '-light', action };
+            if (value !== null) {
+                data.value = value;
+            }
+            
+            const response = await fetch('/api/device-control', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            
+            if (response.ok) {
+                if (action === 'on' || action === 'off') {
+                    updateLightStatus(light, action === 'on');
+                } else if (action === 'brightness' && value !== null) {
+                    // Update brightness slider if needed
+                    const brightnessSlider = document.getElementById(light + '-brightness');
+                    if (brightnessSlider) {
+                        brightnessSlider.value = value;
+                    }
+                }
+                return await response.json(); // Return response data
+            }
+        } catch (error) {
+            console.error('Error controlling light:', error);
+            return { error: 'Failed to control light' };
+        }
+    }
+    
+    function updateLightStatus(light, isOn) {
+        const statusElement = document.getElementById(`${light}-light-status`);
+        const brightnessSlider = document.getElementById(`${light}-brightness`);
+        const brightnessValue = document.getElementById(`${light}-light-brightness-value`);
+        
+        if (statusElement) {
+            statusElement.textContent = isOn ? 'ON' : 'OFF';
+            statusElement.className = `light-status ${isOn ? 'status-on' : 'status-off'}`;
+        }
+        
+        if (brightnessSlider) {
+            // Enable/disable the slider based on light status
+            brightnessSlider.disabled = !isOn;
+            
+            if (isOn && brightnessSlider.value === '0') {
+                // If turning on and brightness is 0, set to 100%
+                brightnessSlider.value = 100;
+                brightnessValue.textContent = '100%';
+                // Send the brightness value to the server
+                controlLight(light, 'brightness', 100);
+            } else if (!isOn) {
+                // If turning off, set brightness to 0
+                brightnessSlider.value = 0;
+                brightnessValue.textContent = '0%';
+            }
+        }
+    }
+    
+    // Update brightness value when slider changes
+    document.querySelectorAll('.brightness-slider').forEach(slider => {
+        slider.addEventListener('input', function() {
+            const light = this.id.split('-')[0];
+            const valueElement = document.getElementById(`${light}-light-brightness-value`);
+            if (valueElement) {
+                valueElement.textContent = `${this.value}%`;
+            }
+        });
+    });
+    
+    // Scene activation function
+    async function activateScene(scene) {
+        try {
+            const response = await fetch('/api/scene-control', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ scene })
+            });
+            
+            if (response.ok) {
+                // Update UI based on scene
+                switch(scene) {
+                    case 'reading':
+                        updateLightStatus('main', true);
+                        updateLightStatus('desk', true);
+                        updateLightStatus('ambient', false);
+                        break;
+                    case 'movie':
+                        updateLightStatus('main', false);
+                        updateLightStatus('desk', false);
+                        updateLightStatus('ambient', true);
+                        break;
+                    case 'evening':
+                        updateLightStatus('main', true);
+                        updateLightStatus('desk', false);
+                        updateLightStatus('ambient', true);
+                        break;
+                    case 'all-off':
+                        updateLightStatus('main', false);
+                        updateLightStatus('desk', false);
+                        updateLightStatus('ambient', false);
+                        break;
+                }
+            }
+        } catch (error) {
+            console.error('Error activating scene:', error);
+        }
+    }
+    
+    // Initialize the page
+    async function initializePage() {
+        try {
+            const response = await fetch('/api/current-status');
+            const status = await response.json();
+            
+            if (response.ok) {
+                // Update light statuses based on current state
+                // This is a simplified example - you would need to adapt this to your actual API response
+                updateLightStatus('main', status.main_light_state === 'ON');
+                updateLightStatus('desk', status.desk_light_state === 'ON');
+                updateLightStatus('ambient', status.ambient_light_state === 'ON');
+            }
+        } catch (error) {
+            console.error('Error fetching status:', error);
+        }
+    }
+    
+    // Call initialization when page loads
+    window.addEventListener('load', initializePage);
+</script>
+</body>
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Control - Ardio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+        }
+        .hero {
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            border-radius: 32px;
+            padding: 2.5rem 2rem 2rem 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 32px rgba(255, 179, 71, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            color: #fff;
+        }
+        .hero-icon {
+            font-size: 3.5rem;
+            color: #fff;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(255, 179, 71, 0.15);
+        }
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -2px;
+        }
+        .hero-desc {
+            font-size: 1.2rem;
+            color: #fffbe6;
+        }
+        .card {
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(255, 179, 71, 0.08), 0 1.5px 4px rgba(255, 179, 71, 0.03);
+            border: none;
+            margin-bottom: 32px;
+            transition: box-shadow 0.2s, transform 0.2s;
+            background: #fff8f0;
+        }
+        .card:hover {
+            box-shadow: 0 16px 48px rgba(255, 179, 71, 0.18), 0 3px 8px rgba(255, 179, 71, 0.08);
+            transform: translateY(-4px) scale(1.01);
+        }
+        .card-header {
+            border-radius: 24px 24px 0 0;
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            border-bottom: none;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.6rem 2rem;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(255, 179, 71, 0.08);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #ffcc33 0%, #ffb347 100%);
+            box-shadow: 0 4px 16px rgba(255, 179, 71, 0.12);
+        }
+        .btn-outline-secondary {
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.6rem 2rem;
+        }
+        .nav-pills {
+            margin-bottom: 2rem;
+        }
+        .nav-pills .nav-link {
+            border-radius: 12px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            color: #ff9800;
+            margin-right: 0.5rem;
+        }
+        .nav-pills .nav-link.active {
+            background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+            color: white;
+        }
+        .device-card {
+            padding: 1.5rem;
+            height: 100%;
+        }
+        .device-icon {
+            font-size: 2.5rem;
+            color: #ffb347;
+            margin-bottom: 1rem;
+        }
+        .device-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .device-status {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        .status-on {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-off {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .device-info {
+            color: #6c757d;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        .temp-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        .temp-display {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ff9800;
+            margin: 0 1.5rem;
+            min-width: 80px;
+            text-align: center;
+        }
+        .temp-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .speed-control {
+            margin-bottom: 1.5rem;
+        }
+        .speed-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .speed-btn {
+            flex: 1;
+            border-radius: 10px;
+            padding: 0.5rem;
+            font-weight: 600;
+        }
+        .speed-btn.active {
+            background: #ffb347;
+            color: white;
+        }
+        @media (max-width: 767px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            .nav-pills .nav-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
+                white-space: nowrap;
+                overflow: visible;
+            }
+            .nav-pills {
+                gap: 0.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid py-4">
+    <div class="hero mb-5">
+        <div>
+            <i class="bi bi-gear-fill hero-icon"></i>
+        </div>
+        <div>
+            <div class="hero-title">Device Control</div>
+            <div class="hero-desc">Manage all your connected devices for optimal energy usage</div>
+        </div>
+    </div>
+    
+    <nav class="mb-4">
+        <ul class="nav nav-pills flex-wrap">
+            <li class="nav-item">
+                <a class="nav-link" href="/welcome">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/lights">Lighting</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/devices">Other Devices</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/stats">Statistics</a>
+            </li>
+            <li class="nav-item ms-md-auto mt-2 mt-md-0">
+                <a class="nav-link" href="/api/auth/logout">Logout</a>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="row g-4">
+        <!-- Fan Control -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card device-card">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-fan device-icon me-3"></i>
+                    <div>
+                        <div class="device-title">Smart Fan</div>
+                        <div class="device-status status-off" id="fan-status">OFF</div>
+                    </div>
+                </div>
+                <div class="device-info">
+                    Control your fan's power and speed settings
+                </div>
+                <div class="speed-control">
+                    <label class="form-label">Fan Speed</label>
+                    <div class="speed-buttons">
+                        <button class="btn btn-outline-secondary speed-btn" onclick="controlDevice('fan', 'speed', 1)">Low</button>
+                        <button class="btn btn-outline-secondary speed-btn" onclick="controlDevice('fan', 'speed', 2)">Med</button>
+                        <button class="btn btn-outline-secondary speed-btn" onclick="controlDevice('fan', 'speed', 3)">High</button>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary flex-grow-1" onclick="controlDevice('fan', 'on')">ON</button>
+                    <button class="btn btn-outline-secondary flex-grow-1" onclick="controlDevice('fan', 'off')">OFF</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Thermostat Control -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card device-card">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-thermometer-half device-icon me-3"></i>
+                    <div>
+                        <div class="device-title">Thermostat</div>
+                        <div class="device-status status-on" id="thermostat-status">ON</div>
+                    </div>
+                </div>
+                <div class="device-info">
+                    Current room temperature: <span id="current-temp">22°C</span>
+                </div>
+                <div class="temp-control">
+                    <button class="btn btn-outline-secondary temp-btn" onclick="adjustTemp(-1)">-</button>
+                    <div class="temp-display" id="set-temp">21°C</div>
+                    <button class="btn btn-primary temp-btn" onclick="adjustTemp(1)">+</button>
+                </div>
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="eco-mode" checked>
+                    <label class="form-check-label" for="eco-mode">Eco Mode</label>
+                </div>
+                <div class="mb-3">
+                    <label for="temperature" class="form-label">Temperature: <span id="temp-value">72</span>°F</label>
+                    <input type="range" class="form-range" id="temperature" min="60" max="85" value="72" 
+                           oninput="document.getElementById('temp-value').textContent = this.value">
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary flex-grow-1" onclick="controlDevice('thermostat', 'on')">ON</button>
+                    <button class="btn btn-outline-secondary flex-grow-1" onclick="controlDevice('thermostat', 'off')">OFF</button>
+                    <button class="btn btn-info flex-grow-1" onclick="controlDevice('thermostat', 'set', document.getElementById('temperature').value)">Set</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Air Purifier Control -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card device-card">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-wind device-icon me-3"></i>
+                    <div>
+                        <div class="device-title">Air Purifier</div>
+                        <div class="device-status status-off" id="purifier-status">OFF</div>
+                    </div>
+                </div>
+                <div class="device-info">
+                    Air Quality: <span id="air-quality">Good</span>
+                </div>
+                <div class="speed-control">
+                    <label class="form-label">Purifier Mode</label>
+                    <div class="speed-buttons">
+                        <button class="btn btn-outline-secondary speed-btn" onclick="setPurifierMode('auto')">Auto</button>
+                        <button class="btn btn-outline-secondary speed-btn" onclick="setPurifierMode('sleep')">Sleep</button>
+                        <button class="btn btn-outline-secondary speed-btn" onclick="setPurifierMode('max')">Max</button>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary flex-grow-1" onclick="controlDevice('purifier', 'on')">ON</button>
+                    <button class="btn btn-outline-secondary flex-grow-1" onclick="controlDevice('purifier', 'off')">OFF</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Smart Plug Control -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card device-card">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-plug-fill device-icon me-3"></i>
+                    <div>
+                        <div class="device-title">Smart Plug</div>
+                        <div class="device-status status-on" id="plug-status">ON</div>
+                    </div>
+                </div>
+                <div class="device-info">
+                    Current Power: <span id="power-usage">45W</span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Connected Device</label>
+                    <select class="form-select" id="plug-device">
+                        <option value="charger">Phone Charger</option>
+                        <option value="tv">TV</option>
+                        <option value="computer">Computer</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary flex-grow-1" onclick="controlDevice('plug', 'on')">ON</button>
+                    <button class="btn btn-outline-secondary flex-grow-1" onclick="controlDevice('plug', 'off')">OFF</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Humidifier Control -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card device-card">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-droplet-half device-icon me-3"></i>
+                    <div>
+                        <div class="device-title">Humidifier</div>
+                        <div class="device-status status-off" id="humidifier-status">OFF</div>
+                    </div>
+                </div>
+                <div class="device-info">
+                    Current Humidity: <span id="current-humidity">35%</span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Target Humidity</label>
+                    <input type="range" class="form-range" id="humidity-level" min="30" max="70" value="45" 
+                           oninput="document.getElementById('target-humidity').textContent = this.value + '%'">
+                    <div class="d-flex justify-content-between">
+                        <small>30%</small>
+                        <small id="target-humidity">45%</small>
+                        <small>70%</small>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary flex-grow-1" onclick="controlDevice('humidifier', 'on')">ON</button>
+                    <button class="btn btn-outline-secondary flex-grow-1" onclick="controlDevice('humidifier', 'off')">OFF</button>
+                    <button class="btn btn-info flex-grow-1" onclick="controlDevice('humidifier', 'set', document.getElementById('humidity-level').value)">Set</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Energy Monitor -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card device-card">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-lightning-charge device-icon me-3"></i>
+                    <div>
+                        <div class="device-title">Energy Monitor</div>
+                        <div class="device-status status-on" id="monitor-status">ACTIVE</div>
+                    </div>
+                </div>
+                <div class="device-info">
+                    Total Energy Usage: <span id="total-energy">2.4 kWh</span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Daily Usage</label>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65%</div>
+                    </div>
+                    <small class="text-muted">65% of your daily energy budget</small>
+                </div>
+                <button class="btn btn-primary w-100" onclick="viewEnergyDetails()">View Detailed Report</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mt-4">
+        <div class="card-header">Device Automation</div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Schedule Devices</label>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <select class="form-select" id="schedule-device">
+                            <option value="">Select Device</option>
+                            <option value="fan">Smart Fan</option>
+                            <option value="thermostat">Thermostat</option>
+                            <option value="purifier">Air Purifier</option>
+                            <option value="plug">Smart Plug</option>
+                            <option value="humidifier">Humidifier</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="schedule-action">
+                            <option value="">Select Action</option>
+                            <option value="on">Turn On</option>
+                            <option value="off">Turn Off</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="time" class="form-control" id="schedule-time">
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100" onclick="addSchedule()">Add</button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Device</th>
+                            <th>Action</th>
+                            <th>Time</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="schedule-table">
+                        <tr>
+                            <td>Smart Fan</td>
+                            <td>Turn Off</td>
+                            <td>22:00</td>
+                            <td><button class="btn btn-sm btn-outline-danger" onclick="removeSchedule(this)">Remove</button></td>
+                        </tr>
+                        <tr>
+                            <td>Thermostat</td>
+                            <td>Turn On</td>
+                            <td>06:30</td>
+                            <td><button class="btn btn-sm btn-outline-danger" onclick="removeSchedule(this)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Device control functions
+    async function controlDevice(device, action, value = null) {
+        try {
+            const data = { device, action };
+            if (value !== null) {
+                data.value = value;
+            }
+            
+            // Handle UI updates for specific actions before server request
+            if (device === 'fan' && action === 'speed' && value !== null) {
+                document.querySelectorAll('.speed-btn').forEach((btn, index) => {
+                    if (index + 1 === parseInt(value)) {
+                        btn.classList.add('active');
+                        btn.classList.remove('btn-outline-secondary');
+                        btn.classList.add('btn-primary');
+                    } else {
+                        btn.classList.remove('active');
+                        btn.classList.remove('btn-primary');
+                        btn.classList.add('btn-outline-secondary');
+                    }
+                });
+            }
+            
+            const response = await fetch('/api/device-control', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            
+            if (response.ok) {
+                // Update device status for on/off actions
+                if (action === 'on' || action === 'off') {
+                    updateDeviceStatus(device, action === 'on');
+                }
+                return await response.json(); // Return response data
+            }
+        } catch (error) {
+            console.error('Error controlling device:', error);
+            return { error: 'Failed to control device' };
+        }
+    }
+    
+    function updateDeviceStatus(device, isOn) {
+        const statusElement = document.getElementById(`${device}-status`);
+        
+        if (statusElement) {
+            statusElement.textContent = isOn ? 'ON' : 'OFF';
+            statusElement.className = `device-status ${isOn ? 'status-on' : 'status-off'}`;
+            
+            // Enable/disable controls based on status
+            if (device === 'fan') {
+                document.querySelectorAll('.speed-btn').forEach(btn => {
+                    btn.disabled = !isOn;
+                });
+            } else if (device === 'thermostat') {
+                document.querySelectorAll('.temp-btn').forEach(btn => {
+                    btn.disabled = !isOn;
+                });
+                document.getElementById('eco-mode').disabled = !isOn;
+            } else if (device === 'purifier') {
+                document.querySelectorAll('.speed-btn').forEach(btn => {
+                    btn.disabled = !isOn;
+                });
+            } else if (device === 'humidifier') {
+                document.getElementById('humidity-level').disabled = !isOn;
+            }
+        }
+    }
+    
+    // Fan speed control - This function is now deprecated, using controlDevice directly
+    // The visual styling is now handled in the controlDevice function
+    function setFanSpeed(speed) {
+        // Call the updated controlDevice function
+        controlDevice('fan', 'speed', speed);
+    }
+    
+    // Thermostat temperature control
+    function adjustTemp(change) {
+        const tempDisplay = document.getElementById('set-temp');
+        let currentTemp = parseInt(tempDisplay.textContent);
+        currentTemp += change;
+        
+        // Limit temperature range
+        if (currentTemp < 16) currentTemp = 16;
+        if (currentTemp > 30) currentTemp = 30;
+        
+        tempDisplay.textContent = `${currentTemp}°C`;
+        
+        // Send temperature to server
+        fetch('/api/device-control', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ device: 'thermostat', action: 'temp', value: currentTemp })
+        }).catch(error => console.error('Error setting temperature:', error));
+    }
+    
+    // Air purifier mode control
+    function setPurifierMode(mode) {
+        document.querySelectorAll('.speed-btn').forEach((btn, index) => {
+            const btnMode = btn.textContent.toLowerCase();
+            if (btnMode === mode) {
+                btn.classList.add('active');
+                btn.classList.remove('btn-outline-secondary');
+                btn.classList.add('btn-primary');
+            } else {
+                btn.classList.remove('active');
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline-secondary');
+            }
+        });
+        
+        // Send purifier mode to server
+        fetch('/api/device-control', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ device: 'purifier', action: 'mode', value: mode })
+        }).catch(error => console.error('Error setting purifier mode:', error));
+    }
+    
+    // Humidifier control
+    document.getElementById('humidity-level').addEventListener('input', function() {
+        document.getElementById('target-humidity').textContent = this.value + '%';
+        
+        // Send humidity level to server
+        fetch('/api/device-control', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ device: 'humidifier', action: 'level', value: this.value })
+        }).catch(error => console.error('Error setting humidity level:', error));
+    });
+    
+    // Schedule management
+    function addSchedule() {
+        const device = document.getElementById('schedule-device').value;
+        const action = document.getElementById('schedule-action').value;
+        const time = document.getElementById('schedule-time').value;
+        
+        if (!device || !action || !time) {
+            alert('Please fill in all fields');
+            return;
+        }
+        
+        const table = document.getElementById('schedule-table');
+        const row = table.insertRow();
+        
+        // Map device values to display names
+        const deviceNames = {
+            'fan': 'Smart Fan',
+            'thermostat': 'Thermostat',
+            'purifier': 'Air Purifier',
+            'plug': 'Smart Plug',
+            'humidifier': 'Humidifier'
+        };
+        
+        // Map action values to display names
+        const actionNames = {
+            'on': 'Turn On',
+            'off': 'Turn Off'
+        };
+        
+        row.innerHTML = `
+            <td>${deviceNames[device]}</td>
+            <td>${actionNames[action]}</td>
+            <td>${time}</td>
+            <td><button class="btn btn-sm btn-outline-danger" onclick="removeSchedule(this)">Remove</button></td>
+        `;
+        
+        // Clear form
+        document.getElementById('schedule-device').value = '';
+        document.getElementById('schedule-action').value = '';
+        document.getElementById('schedule-time').value = '';
+        
+        // Send schedule to server
+        fetch('/api/schedule', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ device, action, time })
+        }).catch(error => console.error('Error adding schedule:', error));
+    }
+    
+    function removeSchedule(button) {
+        const row = button.closest('tr');
+        const device = row.cells[0].textContent;
+        const action = row.cells[1].textContent;
+        const time = row.cells[2].textContent;
+        
+        row.remove();
+        
+        // Send delete request to server
+        fetch('/api/schedule', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ device, action, time })
+        }).catch(error => console.error('Error removing schedule:', error));
+    }
+    
+    function viewEnergyDetails() {
+        alert('Energy details report will be available in a future update!');
+    }
+    
+    // Initialize the page
+    async function initializePage() {
+        try {
+            const response = await fetch('/api/current-status');
+            const status = await response.json();
+            
+            if (response.ok) {
+                // Update device statuses based on current state
+                updateDeviceStatus('fan', status.fan_state === 'ON');
+                // Other device statuses would be updated here based on API response
+            }
+        } catch (error) {
+            console.error('Error fetching status:', error);
+        }
+    }
+    
+    // Call initialization when page loads
+    window.addEventListener('load', initializePage);
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+Flask==2.3.3
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.21
+Werkzeug==2.3.7
+python-dotenv==1.0.0
+flask-cors==4.0.0
+Flask-Login==0.6.2
+email-validator==2.0.0
+passlib==1.7.4
+itsdangerous==2.1.2
